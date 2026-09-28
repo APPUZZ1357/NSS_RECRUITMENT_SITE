@@ -1,0 +1,12 @@
+{
+  "name": "nss-selection-result",
+  "version": "1.0.0",
+  "description": "Private result page for NSS Unit 01, School of Engineering, CUSAT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build/build.mjs",
+    "test": "node test/test.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

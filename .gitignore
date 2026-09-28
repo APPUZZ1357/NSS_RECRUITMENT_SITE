@@ -1,0 +1,10 @@
+# Real student data must never be committed
+data/students.csv
+*.private.csv
+*private*.csv
+*.pdf
+*.xlsx
+
+node_modules/
+.DS_Store
+server.ps1

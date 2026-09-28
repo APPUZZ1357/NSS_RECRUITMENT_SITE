@@ -1,0 +1,9 @@
+{
+  "stages": [
+    { "label": "Task 1", "max": 20 },
+    { "label": "Task 2", "max": 20 },
+    { "label": "Task 3", "max": 20 },
+    { "label": "Group discussion", "max": 20 },
+    { "label": "Interview", "max": 20 }
+  ]
+}
