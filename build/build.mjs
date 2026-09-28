@@ -10,6 +10,10 @@ const p = (...a) => path.join(root, ...a);
 
 const csvPath = p("data", "students.csv");
 if (!fs.existsSync(csvPath)) {
+  if (fs.existsSync(p("index.html"))) {
+    console.log("data/students.csv not found (git-ignored). Using pre-built index.html.");
+    process.exit(0);
+  }
   console.error("Missing data/students.csv.\nCopy data/students.example.csv to data/students.csv and fill in your students.");
   process.exit(1);
 }
