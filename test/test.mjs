@@ -11,6 +11,10 @@ const check = (ok, msg) => { console.log((ok ? "PASS  " : "FAIL  ") + msg); if (
 
 const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
 try { new Function(scripts[scripts.length - 1]); check(true, "page script parses"); } catch (e) { check(false, "page script parses: " + e.message); }
+check(html.includes("var W = 1080, H = 1920"), "download card uses a 9:16 portrait canvas");
+check(html.includes("NSS VOLUNTEER SELECTION 2026") && html.includes("NOT ME BUT YOU"), "download card includes the requested NSS branding");
+check(html.includes('rr(x, 150, 726, 780, 164, 82); x.fillStyle = gold;') && html.includes('text("#NOT ME BUT YOU"'), "download card uses a gold selection badge and hashtag footer");
+check(html.includes('var logo = $(".logos img")') && html.includes('green = "#168653"'), "download card uses the embedded NSS logo and green score checks");
 
 const VAULT = JSON.parse(html.match(/var VAULT = (\{[\s\S]*?\});\n/)[1]);
 const logic = html.match(/\/\* VAULT-LOGIC-START \*\/([\s\S]*?)\/\* VAULT-LOGIC-END \*\//)[1];

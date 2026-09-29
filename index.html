@@ -6,7 +6,7 @@
 <title>NSS Volunteer Card</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #EEF1F9;
@@ -147,7 +147,7 @@ button, input { font: inherit; color: inherit; }
   transition: box-shadow 0.9s ease;
 }
 .idcard.gold .avatar { box-shadow: 0 0 0 4px #FFFBEE, 0 0 0 7px #F2B632; }
-.c-name { font-size: 27px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; overflow-wrap: anywhere; }
+.c-name { font-size: clamp(18px, 2.2vw, 23px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.12; overflow-wrap: anywhere; }
 .c-name.ph { color: #A2AACB; }
 .c-id > div:last-child { min-width: 0; }
 .c-code { color: #5B658F; font-size: 14px; margin-top: 5px; }
@@ -778,47 +778,68 @@ function rr(x, X, Y, w, h, r) {
   x.arcTo(X, Y + h, X, Y, r); x.arcTo(X, Y, X + w, Y, r); x.closePath();
 }
 async function cardImage(s) {
-  try { await document.fonts.load('800 80px "Bricolage Grotesque"'); await document.fonts.load('600 40px "Bricolage Grotesque"'); } catch (e) {}
-  var W = 1080, H = 1350, c = document.createElement("canvas"); c.width = W; c.height = H;
-  var x = c.getContext("2d"), F = '"Bricolage Grotesque", system-ui, sans-serif';
-  var g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#1B2C9A"); g.addColorStop(1, "#0A1240");
-  x.fillStyle = g; x.fillRect(0, 0, W, H);
-  var rg = x.createRadialGradient(W / 2, 250, 20, W / 2, 250, 720);
-  rg.addColorStop(0, "rgba(242,182,50,0.32)"); rg.addColorStop(1, "rgba(242,182,50,0)");
-  x.fillStyle = rg; x.fillRect(0, 0, W, H);
-  /* wheel */
-  x.strokeStyle = "#F2B632"; x.fillStyle = "#F2B632"; x.lineCap = "round";
-  x.lineWidth = 6; x.beginPath(); x.arc(W / 2, 150, 62, 0, 6.2832); x.stroke();
-  x.lineWidth = 4;
-  for (var i = 0; i < 24; i++) {
-    var a = i * 15 * Math.PI / 180;
-    x.beginPath(); x.moveTo(W / 2 + 18 * Math.cos(a), 150 + 18 * Math.sin(a)); x.lineTo(W / 2 + 56 * Math.cos(a), 150 + 56 * Math.sin(a)); x.stroke();
+  try { await document.fonts.load('800 80px "Barlow Condensed"'); await document.fonts.load('700 40px "Barlow Condensed"'); } catch (e) {}
+  var W = 1080, H = 1920, c = document.createElement("canvas"); c.width = W; c.height = H;
+  var x = c.getContext("2d"), F = '"Barlow Condensed", "Bricolage Grotesque", sans-serif';
+  var navy = "#071A33", navyLight = "#102B4D", gold = "#F2C14E", white = "#F8FAFD", green = "#168653";
+  x.fillStyle = navy; x.fillRect(0, 0, W, H);
+
+  x.fillStyle = "#0A2140";
+  x.beginPath(); x.moveTo(0, 0); x.lineTo(720, 0); x.bezierCurveTo(550, 180, 820, 305, 1080, 260); x.lineTo(1080, 620); x.bezierCurveTo(760, 540, 500, 360, 0, 505); x.closePath(); x.fill();
+  x.fillStyle = navyLight;
+  x.beginPath(); x.moveTo(0, 1510); x.bezierCurveTo(280, 1390, 500, 1600, 1080, 1430); x.lineTo(1080, 1920); x.lineTo(0, 1920); x.closePath(); x.fill();
+  x.strokeStyle = "rgba(35,145,238,0.72)"; x.lineWidth = 4;
+  x.beginPath(); x.moveTo(800, 0); x.bezierCurveTo(980, 95, 920, 215, 1080, 280); x.stroke();
+  x.beginPath(); x.moveTo(0, 1570); x.bezierCurveTo(140, 1650, 70, 1790, 260, 1920); x.stroke();
+  x.strokeStyle = "rgba(91,177,248,0.35)"; x.lineWidth = 2;
+  x.beginPath(); x.moveTo(865, 0); x.bezierCurveTo(1030, 105, 965, 210, 1080, 250); x.stroke();
+  x.beginPath(); x.moveTo(0, 1635); x.bezierCurveTo(125, 1715, 92, 1820, 205, 1920); x.stroke();
+
+  function text(str, X, Y, size, weight, color, align) {
+    x.font = weight + " " + size + "px " + F; x.fillStyle = color; x.textAlign = align || "center"; x.textBaseline = "alphabetic"; x.fillText(str, X, Y);
   }
-  x.beginPath(); x.arc(W / 2, 150, 11, 0, 6.2832); x.fill();
-  function text(str, X, Y, size, weight, color, align) { x.font = weight + " " + size + "px " + F; x.fillStyle = color; x.textAlign = align || "center"; x.textBaseline = "alphabetic"; x.fillText(str, X, Y); }
-  text("NSS Volunteer Selection 2026", W / 2, 280, 34, 600, "rgba(255,255,255,0.85)");
-  text("Unit 01 · School of Engineering, CUSAT", W / 2, 320, 26, 500, "rgba(255,255,255,0.6)");
-  var size = 150; x.font = "800 " + size + "px " + F;
-  while (x.measureText(s.name).width > 900 && size > 60) { size -= 6; x.font = "800 " + size + "px " + F; }
-  text(s.name, W / 2, 445, size, 800, "#FFFFFF");
-  text("Code " + s.code, W / 2, 515, 42, 600, "#F2B632");
-  /* badge */
-  rr(x, W / 2 - 230, 575, 460, 100, 50); x.fillStyle = "#F2B632"; x.fill();
-  text("SELECTED", W / 2, 645, 54, 800, "#0A1240");
-  /* rows */
-  var y0 = 760, step = 78;
+  var logo = $(".logos img");
+  if (logo) {
+    try { if (logo.decode) await logo.decode(); } catch (e) {}
+    if (logo.naturalWidth) {
+      x.fillStyle = white; x.beginPath(); x.arc(W / 2, 132, 82, 0, 6.2832); x.fill();
+      var logoScale = Math.min(138 / logo.naturalWidth, 138 / logo.naturalHeight);
+      var logoW = logo.naturalWidth * logoScale, logoH = logo.naturalHeight * logoScale;
+      x.drawImage(logo, (W - logoW) / 2, 132 - logoH / 2, logoW, logoH);
+    }
+  }
+
+  var titleSize = 68;
+  x.font = "800 " + titleSize + "px " + F;
+  while (x.measureText("NSS VOLUNTEER SELECTION 2026").width > 980 && titleSize > 48) { titleSize -= 2; x.font = "700 " + titleSize + "px " + F; }
+  text("NSS VOLUNTEER SELECTION 2026", W / 2, 318, titleSize, 700, white);
+  text("UNIT 01 • SCHOOL OF ENGINEERING,", W / 2, 382, 32, 600, "#CAD5E3");
+  text("CUSAT", W / 2, 426, 32, 600, "#CAD5E3");
+
+  var name = String(s.name || "PARTICIPANT NAME").toUpperCase(), size = 100;
+  x.font = "700 " + size + "px " + F;
+  while (x.measureText(name).width > 860 && size > 48) { size -= 4; x.font = "700 " + size + "px " + F; }
+  x.save(); x.textAlign = "center"; x.textBaseline = "alphabetic"; x.fillStyle = white;
+  x.fillText(name, W / 2, 594, 860); x.restore();
+  text("CODE : " + String(s.code || "").toUpperCase(), W / 2, 666, 40, 700, gold);
+
+  x.save(); x.shadowColor = "rgba(0,0,0,0.38)"; x.shadowBlur = 26; x.shadowOffsetY = 14;
+  rr(x, 150, 726, 780, 164, 82); x.fillStyle = gold; x.fill(); x.restore();
+  text("SELECTED", W / 2, 839, 112, 800, navy);
+
+  var y0 = 1002, step = 108;
   s.stages.forEach(function (v, i) {
-    var cy = y0 + i * step;
-    x.strokeStyle = "rgba(255,255,255,0.18)"; x.lineWidth = 2; x.beginPath(); x.moveTo(150, cy + 48); x.lineTo(930, cy + 48); x.stroke();
-    x.fillStyle = "#D62839"; x.beginPath(); x.arc(178, cy + 14, 22, 0, 6.2832); x.fill();
-    x.strokeStyle = "#fff"; x.lineWidth = 5; x.lineCap = "round"; x.lineJoin = "round";
-    x.beginPath(); x.moveTo(168, cy + 15); x.lineTo(176, cy + 23); x.lineTo(190, cy + 6); x.stroke();
-    text(STAGES[i].label, 226, cy + 28, 38, 600, "#FFFFFF", "left");
-    text(fmt(v) + " / " + STAGES[i].max, 930, cy + 28, 40, 800, "#FFFFFF", "right");
+    var cy = y0 + i * step, label = STAGES[i].label === "Group discussion" ? "Group Discussion" : STAGES[i].label;
+    x.strokeStyle = "rgba(218,230,243,0.22)"; x.lineWidth = 2; x.beginPath(); x.moveTo(118, cy + 92); x.lineTo(962, cy + 92); x.stroke();
+    x.fillStyle = green; x.beginPath(); x.arc(160, cy + 46, 22, 0, 6.2832); x.fill();
+    x.strokeStyle = white; x.lineWidth = 5; x.lineCap = "round"; x.lineJoin = "round";
+    x.beginPath(); x.moveTo(149, cy + 46); x.lineTo(157, cy + 54); x.lineTo(172, cy + 37); x.stroke();
+    text(label, 210, cy + 59, 37, 600, white, "left");
+    text(fmt(typeof v === "number" ? v : 0) + " / " + STAGES[i].max, 958, cy + 59, 37, 700, white, "right");
   });
-  var sum = s.stages.reduce(function (a, b) { return a + b; }, 0), pct = Math.round(sum / TOTAL_MAX * 100);
-  text("Total " + fmt(sum) + " / " + TOTAL_MAX + "  (" + pct + "%)", W / 2, 1225, 56, 800, "#FFFFFF");
-  text("Not Me But You", W / 2, 1305, 36, 600, "#F2B632");
+  var sum = s.stages.reduce(function (a, b) { return a + (typeof b === "number" ? b : 0); }, 0), pct = Math.round(sum / TOTAL_MAX * 100);
+  text("TOTAL " + fmt(sum) + " / " + TOTAL_MAX + " (" + pct + "%)", W / 2, 1656, 54, 700, white);
+  text("#NOT ME BUT YOU", W / 2, 1784, 34, 700, gold);
   return new Promise(function (res) { c.toBlob(res, "image/png"); });
 }
 $("#dl").addEventListener("click", async function () {
